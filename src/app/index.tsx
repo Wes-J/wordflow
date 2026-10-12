@@ -10,8 +10,9 @@ import {
 } from '../lib/study';
 
 type Tab = 'library' | 'flow' | 'plan' | 'learn' | 'stats';
-type SavedState = { decks: Deck[]; words: WordEntry[]; modules: FlowModule[]; selectedDeckIds: string[]; records: StudyRecord[]; planName: string; dailyCount: string; reminder: boolean };
-const defaultState: SavedState = { decks: initialDecks, words: initialWords, modules: initialModules, selectedDeckIds: ['tion'], records: [], planName: '词根精学计划', dailyCount: '20', reminder: false };
+type SavedState = { decks: Deck[]; words: WordEntry[]; modules: FlowModule[]; selectedDeckIds: string[]; records: StudyRecord[]; planName: string; dailyCount: string; reminder: boolean; seedVersion: number };
+const SEED_VERSION = 1;
+const defaultState: SavedState = { decks: initialDecks, words: initialWords, modules: initialModules, selectedDeckIds: ['tion', 'ielts-academic', 'morphemes'], records: [], planName: '词根精学计划', dailyCount: '20', reminder: false, seedVersion: SEED_VERSION };
 
 export default function HomeScreen() {
   const [tab, setTab] = useState<Tab>('library');
@@ -47,7 +48,15 @@ export default function HomeScreen() {
       const saved = JSON.parse(raw) as Partial<SavedState>;
       const storedIds = [...(saved.words ?? []), ...(saved.decks ?? []), ...(saved.modules ?? []), ...(saved.records ?? [])].map((item) => Number(item.id.match(/\d+$/)?.[0] ?? 0));
       nextId.current = Math.max(nextId.current, ...storedIds);
-      setData({ ...defaultState, ...saved });
+      const existingWords = saved.words ?? initialWords.slice(0, 10);
+      const isSeedUpgrade = (saved.seedVersion ?? 0) < SEED_VERSION;
+      const existingTerms = new Set(existingWords.map((word) => word.term.toLocaleLowerCase()));
+      const addedSeedWords = isSeedUpgrade ? initialWords.slice(10).filter((word) => !existingTerms.has(word.term.toLocaleLowerCase())) : [];
+      const existingDecks = saved.decks ?? initialDecks.slice(0, 4);
+      const deckIds = new Set(existingDecks.map((deck) => deck.id));
+      const addedDecks = isSeedUpgrade ? initialDecks.filter((deck) => !deckIds.has(deck.id)) : [];
+      const existingSelectedDeckIds = saved.selectedDeckIds ?? ['tion'];
+      setData({ ...defaultState, ...saved, decks: [...existingDecks, ...addedDecks], words: [...existingWords, ...addedSeedWords], selectedDeckIds: isSeedUpgrade ? Array.from(new Set([...existingSelectedDeckIds, 'ielts-academic', 'morphemes'])) : existingSelectedDeckIds, seedVersion: SEED_VERSION });
     }).catch(() => undefined).finally(() => setHydrated(true));
   }, []);
 
@@ -179,11 +188,12 @@ export default function HomeScreen() {
 
       <ScrollView contentContainerStyle={s.content} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
         {tab === 'library' && <>
-          <Header eyebrow="词根词库" title="从想学的词开始" subtitle="自己建词库、补充单词，再安排适合自己的练习。" />
+          <Header eyebrow="词根词库" title="从想学的词开始" subtitle="内置雅思学术向核心词与高频词根词缀，也可以自己建库、补词和安排练习。" />
           <View style={s.statsRow}>
             <SmallStat value={`${data.words.length}`} label="已收录词条" /><SmallStat value={`${data.decks.length}`} label="我的词库" /><SmallStat value={`${dueCount}`} label="待复习" />
           </View>
           <View style={s.searchRow}><Text style={s.searchIcon}>⌕</Text><TextInput value={query} onChangeText={setQuery} placeholder="搜索单词、释义或词根" placeholderTextColor="#9AA5B5" style={s.searchInput} /></View>
+          <Card><Text style={s.cardTitle}>内置开源词库</Text><Text style={s.body}>“雅思学术核心”参考 NAWL 1.2 学术词表，并非官方 IELTS 固定词表；“高频词根词缀”按前缀、词根、后缀整理，例词用于辅助拆词记忆。</Text><Text style={s.hint}>NAWL：CC BY-SA 4.0 · 构词数据：MIT · 完整来源见仓库 DATA_SOURCES.md</Text></Card>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} style={s.chipsScroll} contentContainerStyle={s.chipsRow}>
             {['全部', ...Array.from(new Set(data.decks.map((deck) => deck.root).filter(Boolean)))].map((root) => <TouchableOpacity key={root} onPress={() => setRootFilter(root)} style={[s.chip, rootFilter === root && s.chipActive]}><Text style={[s.chipText, rootFilter === root && s.chipTextActive]}>{root}</Text></TouchableOpacity>)}
             <TouchableOpacity onPress={() => setShowDeckForm((value) => !value)} style={s.addChip}><Text style={s.addChipText}>＋ 新词根</Text></TouchableOpacity>
