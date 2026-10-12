@@ -49,7 +49,8 @@ export default function HomeScreen() {
       const storedIds = [...(saved.words ?? []), ...(saved.decks ?? []), ...(saved.modules ?? []), ...(saved.records ?? [])].map((item) => Number(item.id.match(/\d+$/)?.[0] ?? 0));
       nextId.current = Math.max(nextId.current, ...storedIds);
       const existingWords = saved.words ?? initialWords.slice(0, 10);
-      const isSeedUpgrade = (saved.seedVersion ?? 0) < SEED_VERSION;
+      const hasOpenSeedDeck = (saved.decks ?? []).some((deck) => deck.id === 'ielts-academic' || deck.id === 'morphemes');
+      const isSeedUpgrade = (saved.seedVersion ?? 0) < SEED_VERSION || !hasOpenSeedDeck;
       const existingTerms = new Set(existingWords.map((word) => word.term.toLocaleLowerCase()));
       const addedSeedWords = isSeedUpgrade ? initialWords.slice(10).filter((word) => !existingTerms.has(word.term.toLocaleLowerCase())) : [];
       const existingDecks = saved.decks ?? initialDecks.slice(0, 4);
