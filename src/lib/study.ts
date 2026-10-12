@@ -9,10 +9,6 @@ export const getNow = () => Date.now();
 export const palette = { ink: '#17243A', muted: '#718096', line: '#E8EDF3', canvas: '#F6F8FB', blue: '#4361EE', green: '#169B72', white: '#FFFFFF' };
 
 export const initialDecks: Deck[] = [
-  { id: 'tion', name: '-tion 名词', root: '-tion', color: '#E5E0FF' },
-  { id: 'able', name: '-able 形容词', root: '-able', color: '#D9F3E8' },
-  { id: 'pre', name: 'pre- 前缀', root: 'pre-', color: '#DDEBFF' },
-  { id: 'personal', name: '我的摘词', root: '', color: '#FFE6C7' },
   { id: 'ielts-academic', name: '雅思学术核心', root: 'NAWL', color: '#DDEBFF' },
   { id: 'morphemes', name: '高频词根词缀', root: '构词法', color: '#E5E0FF' },
 ];
@@ -159,16 +155,6 @@ const morphemeWords: [string, string, string, string, string][] = [
 
 const now = Date.now();
 export const initialWords: WordEntry[] = [
-  { id: 'w1', term: 'action', phonetic: '/ˈækʃn/', meaning: '行动；行为', example: 'We need to take action now.', root: '-tion', deckId: 'tion', stage: 0, dueAt: 0, lapses: 0, createdAt: now },
-  { id: 'w2', term: 'creation', phonetic: '/kriˈeɪʃn/', meaning: '创造；作品', example: 'The creation of the garden took months.', root: '-tion', deckId: 'tion', stage: 0, dueAt: 0, lapses: 0, createdAt: now },
-  { id: 'w3', term: 'selection', phonetic: '/sɪˈlekʃn/', meaning: '选择；精选品', example: 'The shop has a wide selection of books.', root: '-tion', deckId: 'tion', stage: 0, dueAt: 0, lapses: 0, createdAt: now },
-  { id: 'w4', term: 'education', phonetic: '/ˌedʒuˈkeɪʃn/', meaning: '教育；培养', example: 'Education opens many doors.', root: '-tion', deckId: 'tion', stage: 0, dueAt: 0, lapses: 0, createdAt: now },
-  { id: 'w5', term: 'adaptable', phonetic: '/əˈdæptəbl/', meaning: '能适应的；适应性强的', example: 'An adaptable team can handle change.', root: '-able', deckId: 'able', stage: 0, dueAt: 0, lapses: 0, createdAt: now },
-  { id: 'w6', term: 'readable', phonetic: '/ˈriːdəbl/', meaning: '易读的；清晰易懂的', example: 'The report is clear and readable.', root: '-able', deckId: 'able', stage: 0, dueAt: 0, lapses: 0, createdAt: now },
-  { id: 'w7', term: 'preview', phonetic: '/ˈpriːvjuː/', meaning: '预览；预告', example: 'You can preview the lesson first.', root: 'pre-', deckId: 'pre', stage: 0, dueAt: 0, lapses: 0, createdAt: now },
-  { id: 'w8', term: 'predict', phonetic: '/prɪˈdɪkt/', meaning: '预测；预言', example: 'It is difficult to predict the result.', root: 'pre-', deckId: 'pre', stage: 0, dueAt: 0, lapses: 0, createdAt: now },
-  { id: 'w9', term: 'resilient', phonetic: '/rɪˈzɪliənt/', meaning: '有韧性的；能迅速恢复的', example: 'She remained resilient through every challenge.', root: '', deckId: 'personal', stage: 0, dueAt: 0, lapses: 0, createdAt: now },
-  { id: 'w10', term: 'curious', phonetic: '/ˈkjʊriəs/', meaning: '好奇的；求知欲强的', example: 'A curious mind keeps asking why.', root: '', deckId: 'personal', stage: 0, dueAt: 0, lapses: 0, createdAt: now },
   ...openCoreWords.map(([id, term, meaning, example, root]) => ({ id, term, phonetic: '', meaning, example, root, deckId: 'ielts-academic', stage: 0, dueAt: 0, lapses: 0, createdAt: now })),
   ...morphemeWords.map(([id, term, meaning, example, root]) => ({ id, term, phonetic: '', meaning, example, root, deckId: 'morphemes', stage: 0, dueAt: 0, lapses: 0, createdAt: now })),
 ];

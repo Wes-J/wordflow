@@ -8,7 +8,7 @@ The starter deck **雅思学术核心** is an independently curated and annotate
 - Source word list: https://www.newgeneralservicelist.com/s/NAWL_12_alphabetized_description.txt
 - License: https://creativecommons.org/licenses/by-sa/4.0/
 
-Changes made here: a manually selected subset of academic headwords was translated into concise Chinese glosses, paired with newly written example sentences, and annotated with common morphemes for study. These annotations and the adapted NAWL subset are shared under CC BY-SA 4.0. Attribution: Browne and Culligan, *The New Academic Word List* (NAWL 1.2), 2013; New General Service List Project.
+Changes made here: a manually selected subset of academic headwords was translated into concise Chinese glosses, paired with newly written example sentences, and annotated with common morphemes for study. These annotations and the adapted NAWL subset are shared under CC BY-SA 4.0. Attribution: Browne and Culligan, *The New Academic Word List* (NAWL 1.2), 2013; New General Service List Project. The full NAWL wordlist is not bundled yet; the app currently includes a curated subset rather than claiming to provide all 957 entries.
 
 ## Roots and affixes
 
@@ -17,7 +17,7 @@ The common English morpheme data is based on Colin Goldberg's **morphemes** proj
 - Project: https://github.com/colingoldberg/morphemes
 - License: MIT (Copyright 2019 Colin Goldberg)
 
-Changes made here: selected common morphemes were translated and edited for a Chinese-language learning interface; the example word set was curated and expanded for academic study. The original MIT notice is included below.
+Changes made here: selected common morphemes were translated and edited for a Chinese-language learning interface; the example word set was curated and expanded for academic study. Some user-facing example words and sentences were newly written and are not claimed to be verbatim source data. The original MIT notice is included below.
 
 > MIT License
 >

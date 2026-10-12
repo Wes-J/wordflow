@@ -11,8 +11,8 @@ import {
 
 type Tab = 'library' | 'flow' | 'plan' | 'learn' | 'stats';
 type SavedState = { decks: Deck[]; words: WordEntry[]; modules: FlowModule[]; selectedDeckIds: string[]; records: StudyRecord[]; planName: string; dailyCount: string; reminder: boolean; seedVersion: number };
-const SEED_VERSION = 1;
-const defaultState: SavedState = { decks: initialDecks, words: initialWords, modules: initialModules, selectedDeckIds: ['tion', 'ielts-academic', 'morphemes'], records: [], planName: '词根精学计划', dailyCount: '20', reminder: false, seedVersion: SEED_VERSION };
+const SEED_VERSION = 2;
+const defaultState: SavedState = { decks: initialDecks, words: initialWords, modules: initialModules, selectedDeckIds: ['ielts-academic', 'morphemes'], records: [], planName: '词根精学计划', dailyCount: '20', reminder: false, seedVersion: SEED_VERSION };
 
 export default function HomeScreen() {
   const [tab, setTab] = useState<Tab>('library');
@@ -48,16 +48,14 @@ export default function HomeScreen() {
       const saved = JSON.parse(raw) as Partial<SavedState>;
       const storedIds = [...(saved.words ?? []), ...(saved.decks ?? []), ...(saved.modules ?? []), ...(saved.records ?? [])].map((item) => Number(item.id.match(/\d+$/)?.[0] ?? 0));
       nextId.current = Math.max(nextId.current, ...storedIds);
-      const existingWords = saved.words ?? initialWords.slice(0, 10);
-      const hasOpenSeedDeck = (saved.decks ?? []).some((deck) => deck.id === 'ielts-academic' || deck.id === 'morphemes');
-      const isSeedUpgrade = (saved.seedVersion ?? 0) < SEED_VERSION || !hasOpenSeedDeck;
-      const existingTerms = new Set(existingWords.map((word) => word.term.toLocaleLowerCase()));
-      const addedSeedWords = isSeedUpgrade ? initialWords.slice(10).filter((word) => !existingTerms.has(word.term.toLocaleLowerCase())) : [];
-      const existingDecks = saved.decks ?? initialDecks.slice(0, 4);
-      const deckIds = new Set(existingDecks.map((deck) => deck.id));
-      const addedDecks = isSeedUpgrade ? initialDecks.filter((deck) => !deckIds.has(deck.id)) : [];
-      const existingSelectedDeckIds = saved.selectedDeckIds ?? ['tion'];
-      setData({ ...defaultState, ...saved, decks: [...existingDecks, ...addedDecks], words: [...existingWords, ...addedSeedWords], selectedDeckIds: isSeedUpgrade ? Array.from(new Set([...existingSelectedDeckIds, 'ielts-academic', 'morphemes'])) : existingSelectedDeckIds, seedVersion: SEED_VERSION });
+      const storedVersion = saved.seedVersion ?? 0;
+      if (storedVersion < SEED_VERSION) {
+        // Reset the old demo words, decks, review history, and custom settings once.
+        // Subsequent user additions/deletions are preserved by the current seed version.
+        setData(defaultState);
+      } else {
+        setData({ ...defaultState, ...saved, seedVersion: SEED_VERSION });
+      }
     }).catch(() => undefined).finally(() => setHydrated(true));
   }, []);
 
