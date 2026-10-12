@@ -24,12 +24,9 @@ npx expo start
 
 ## 发布可持续更新的网页预览
 
-项目已配置 Expo Router 静态 Web 输出，构建命令为 `npm run build:web`，输出目录为 `dist`。可用 Cloudflare Pages 绑定 GitHub 仓库，实现推送后自动发布：
+项目通过 GitHub Actions 自动构建 Expo 静态网页并发布到 GitHub Pages。每次推送到 `master` 都会更新固定网址：`https://wes-j.github.io/wordflow/`。
 
-1. 将本项目推送到 GitHub 仓库（建议先设为私有）。
-2. 在 Cloudflare Pages 创建项目并连接该 GitHub 仓库。
-3. 构建设置填写：生产分支 `master`、构建命令 `npm run build:web`、构建输出目录 `dist`。
-4. 部署完成后，将 Pages 提供的固定网址发给朋友。后续推送到 `master` 会自动更新该网址；其他分支会生成预览部署。
+首次启用时，在仓库的 **Settings → Pages → Build and deployment → Source** 中选择 **GitHub Actions**。工作流会构建 `dist` 并发布；GitHub Pages 项目站点使用 `/wordflow` 子路径，原生 App 配置不受影响。
 
 网页无需安装 App。词条和学习记录目前保存在每个访问者自己的浏览器本地，不会在朋友之间同步；提醒偏好也尚未触发系统通知。
 
@@ -38,5 +35,5 @@ npx expo start
 ```bash
 npx expo lint
 npx tsc --noEmit
-npx expo export --platform web
+npm run build:web
 ```
