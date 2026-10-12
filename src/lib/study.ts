@@ -3,7 +3,7 @@ import { openAffixes, openRoots } from './open-roots';
 export type ModuleKind = 'recognize' | 'recall' | 'listen' | 'spell' | 'example' | 'retry' | 'branch' | 'morphology';
 export type FlowModule = { id: string; kind: ModuleKind; title: string; subtitle: string; color: string; enabled: boolean; seconds: number };
 export type Deck = { id: string; name: string; root: string; color: string };
-export type WordEntry = { id: string; term: string; phonetic: string; meaning: string; example: string; root: string; deckId: string; stage: number; dueAt: number; lapses: number; createdAt: number };
+export type WordEntry = { id: string; term: string; phonetic: string; meaning: string; example: string; root: string; deckId: string; stage: number; dueAt: number; lapses: number; createdAt: number; highlighted?: boolean };
 export type StudyRecord = { id: string; wordId: string; moduleKind: ModuleKind; known: boolean; at: number };
 
 export const STORAGE_KEY = 'wordflow-v2';
